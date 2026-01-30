@@ -63,30 +63,123 @@ php artisan make:model Category -m
 using index in column:
 
 ```Plaintext
-<table>
-  <tr>
-    <th>Without Index (Slow)  </th>
-    <th>With Index (Fast)</th>
-  </tr>
-  <tr>
-    
-    <td>Database searches row-by-row.s</td>
-    <td>Database uses a "Binary Search" or "B-Tree.</td>
-  </tr>
-  <tr>
-    <td>If you have 1 million users, it checks 1 million rows.</td>
-    <td>If you have 1 million users, it finds the result in about 20 steps.</td>
-  </tr>
-  <tr>
-    <td>High CPU usage.</td>
-    <td>Low CPU usage, very high speed.</td>
-  </tr>
-</table>
+
+| Without Index (Slow)         | With Index (Fast) |
+|---------------------         |------------------|
+| Database searches row-by-row | Uses Binary Search / B-Tree |
+| Checks 1 million rows        | Finds result in ~20 steps |
+| High CPU usage               | Low CPU usage, very fast |
+
+```
+
+- ®️™ Brand:
+
+```CMD
+php artisan make:model Brand -m  
+```
+- 📦 Product
+
+```CMD
+php artisan make:model Product -m
+```
+- 🏷 ProductVariant
+
+```CMD
+php artisan make:model ProductVariant -m
+```
+- product_variants table because customers don't buy "Products," they buy "Variants."
+- The products table stores the general information (the story, the brand, the category).
+- The product_variants table stores the physical specifics (size, color, material).
+
+1. Product: "Nike Air Max" (1 entry)
+2. Variants: "Size 10 Red," "Size 11 Red," "Size 10 Blue" (3 entries)
+
+- 🖼️ ProductImage:
+
+```CMD
+php artisan make:model ProductImage -m  
+```
+-🎟️ Coupon :
+
+```CMD
+php artisan make:model Coupon -m  
+```
+
+-🚚 Order:
+
+```CMD
+php artisan make:model Order -m 
 ```
 
 
 
 
+
+## 🔗 Model Relationships
+
+🧑 Customer & Address
+- A **Customer** has many **Addresses**
+- An **Address** belongs to a **Customer**
+
+**Relationship Type:** One-to-Many
+
+---
+
+ 🗂️ Category & Product
+- A **Category** has many **Products**
+- A **Product** belongs to a **Category**
+
+**Relationship Type:** One-to-Many
+
+---
+
+🏷️ Brand & Product
+- A **Brand** has many **Products**
+- A **Product** belongs to a **Brand**
+
+**Relationship Type:** One-to-Many
+---
+
+🏷️ Product & ProductVariant
+- A **Product** has many **ProductVariants**
+- A **ProductVariant** belongs to a **Product**
+
+**Relationship Type:** One-to-Many
+
+
+🏷️ Product & ProductImage
+- A **Product** has many **ProductImages**
+- A **ProductImage** belongs to a **Product**
+
+**Relationship Type:** One-to-Many
+
+🏷️ ProductVariant & ProductImage
+- A **ProductVariant** has many **ProductImages**
+- A **ProductImage** belongs to a **ProductVariant**
+
+**Relationship Type:** One-to-Many
+
+🚚 Product & Order
+- A **Order** has many **Products**
+- A **Product** belongs to a **Order**
+
+**Relationship Type:** One-to-Many
+
+🚚 Customer & Order
+- A **Customer** has many **Orders**
+- A **Order** belongs to a **Customer**
+
+**Relationship Type:** One-to-Many
+
+🚚 Coupon & Order
+- A **Order** has many **Coupons**
+- A **Coupon** belongs to a **Order**
+
+**Relationship Type:** One-to-Many
+
+
+
+  
 
 
 
