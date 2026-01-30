@@ -34,6 +34,41 @@ User.php:
     }
 
 ```
+- Local Scope(Business Logic):
+
+```PHP
+ public function scopeActive(Builder $builder){
+        $builder->where('is_active',true);
+    }
+
+```
+
+## ⛔ Restriction (User can't access admin dashboard):
+
+Filament Link: ```https://filamentphp.com/docs/5.x/users/overview```
+
+```PHP
+class User extends Authenticatable implements FilamentUser
+{
+    // ...
+
+        public function canAccessPanel(Panel $panel): bool
+{
+    $admins = [
+        'admin@example.com',
+        'dev@example.com',
+    ];
+
+    return in_array($this->email, $admins);
+}
+}
+
+```
+CMD to make an Admin:
+
+```CMD
+php artisan make:filament-user
+```
 
 - 🙋🏻‍♂️ Customer :
 
@@ -54,12 +89,7 @@ $table->softDeletes(); //The Purpose: It allows for "Safe Deletion." Instead of 
 ```CMD
 php artisan make:model Address -m
 ```
-- 🗺️ Customer:
-- Stores user identities and login credentials to track who is shopping.
 
-```CMD
-php artisan make:model Customer -m
-```
 - 🗃️ Category:
 - Organizes products into logical groups (like Electronics) for easy navigation.
   
@@ -163,11 +193,6 @@ php artisan make:model Review -m
 php artisan make:model Setting -m
 ```
 
-
-
-
-
-
 ## 🔗 Model Relationships
 
 🧑 Customer & Address
@@ -176,7 +201,7 @@ php artisan make:model Setting -m
 
 **Relationship Type:** One-to-Many
 
----
+
 
  🗂️ Category & Product
 - A **Category** has many **Products**
@@ -184,14 +209,14 @@ php artisan make:model Setting -m
 
 **Relationship Type:** One-to-Many
 
----
+
 
 🏷️ Brand & Product
 - A **Brand** has many **Products**
 - A **Product** belongs to a **Brand**
 
 **Relationship Type:** One-to-Many
----
+
 
 🏷️ Product & ProductVariant
 - A **Product** has many **ProductVariants**
@@ -245,7 +270,28 @@ php artisan make:model Setting -m
 
 **Relationship Type:** One-to-Many
 
-  
+- .env settings:
+
+```Plaintext
+APP_NAME='Ecommerce'
+FILESYSTEM_DISK=public
+```  
+
+### Filament:
+<hr>
+
+Installing Filament 4.0
+Linkd: ```https://filamentphp.com/docs/4.x/introduction/installation```
+
+```CMD
+composer require filament/filament:"^5.0"
+
+php artisan filament:install --panels
+
+```
+- This will create and register a new Laravel service provider called app/Providers/Filament/AdminPanelProvider.php.
+
+Link: ```https://filamentphp.com/plugins/bezhansalleh-shield```
 
 
 
