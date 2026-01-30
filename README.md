@@ -49,12 +49,19 @@ $table->softDeletes(); //The Purpose: It allows for "Safe Deletion." Instead of 
 
 
 - 🗺️ Address:
+- Links physical shipping and billing locations to specific customers.
 
 ```CMD
 php artisan make:model Address -m
 ```
+- 🗺️ Customer:
+- Stores user identities and login credentials to track who is shopping.
 
+```CMD
+php artisan make:model Customer -m
+```
 - 🗃️ Category:
+- Organizes products into logical groups (like Electronics) for easy navigation.
   
 ```CMD
 php artisan make:model Category -m
@@ -73,16 +80,19 @@ using index in column:
 ```
 
 - ®️™ Brand:
+- Manages manufacturer identities to allow filtering by label (like Nike or Samsung).
 
 ```CMD
 php artisan make:model Brand -m  
 ```
-- 📦 Product
+- 📦 Product:
+- Acts as the central hub for general item details, descriptions, and SEO data.
 
 ```CMD
 php artisan make:model Product -m
 ```
-- 🏷 ProductVariant
+- 🏷 ProductVariant:
+- Tracks the specific "shoppable" versions of a product, like different sizes or colors.
 
 ```CMD
 php artisan make:model ProductVariant -m
@@ -95,21 +105,64 @@ php artisan make:model ProductVariant -m
 2. Variants: "Size 10 Red," "Size 11 Red," "Size 10 Blue" (3 entries)
 
 - 🖼️ ProductImage:
+- Manages the visual gallery and links specific photos to specific product variants.
 
 ```CMD
 php artisan make:model ProductImage -m  
 ```
--🎟️ Coupon :
+- 🎟️ Coupon :
+- Defines the rules and values for discounts and promotional offers.
 
 ```CMD
 php artisan make:model Coupon -m  
 ```
 
--🚚 Order:
+- 🚚 Order:
+- Captures the "snapshot" of a completed transaction, including total costs and shipping data.
+
 
 ```CMD
 php artisan make:model Order -m 
 ```
+
+- 📋 OrderItem:
+- Records the exact price, quantity, and name of every specific item inside an order.
+
+
+```CMD
+php artisan make:model OrderItem -m
+```
+-The "Shopping Trip" Analogy
+👉 Customer: The person who went shopping.
+👉 Order: The Transaction (The swipe of the credit card, the date, the store location).
+👉 OrderItems: The Bag of Groceries (The milk, the bread, the eggs).
+
+- OrderStatusHistory:
+- Creates a timeline of an order’s journey from "Pending" to "Delivered."
+
+```CMD
+php artisan make:model OrderStatusHistory -m
+````
+- CouponUsage:
+- Provides an audit trail to prevent customers from reusing codes unfairly 
+
+```CMD
+php artisan make:model CouponUsage -m
+```
+- Review:
+- Collects social proof and star ratings to build trust with future buyers.
+
+```CMD
+php artisan make:model Review -m   
+```
+
+- Setting:
+- Provides a central control panel to manage site-wide info without touching code.
+
+```CMD
+php artisan make:model Setting -m
+```
+
 
 
 
@@ -157,11 +210,6 @@ php artisan make:model Order -m
 - A **ProductVariant** has many **ProductImages**
 - A **ProductImage** belongs to a **ProductVariant**
 
-**Relationship Type:** One-to-Many
-
-🚚 Product & Order
-- A **Order** has many **Products**
-- A **Product** belongs to a **Order**
 
 **Relationship Type:** One-to-Many
 
@@ -177,7 +225,25 @@ php artisan make:model Order -m
 
 **Relationship Type:** One-to-Many
 
+📋  OrderItem & Product
+- A **Product** has many **OrderItems**
+- A **OrderItem** belongs to a **Product**
 
+**Relationship Type:** One-to-Many
+
+
+📋  OrderItem & Order
+- A **Order** has many **OrderItems**
+- A **OrderItem** belongs to a **Order**
+
+**Relationship Type:** One-to-Many
+
+
+📋  OrderItem & ProductVariant
+- A **ProductVariant** has many **OrderItems**
+- A **OrderItem** belongs to a **ProductVariant**
+
+**Relationship Type:** One-to-Many
 
   
 
