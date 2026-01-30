@@ -53,7 +53,84 @@ $table->softDeletes(); //The Purpose: It allows for "Safe Deletion." Instead of 
 ```CMD
 php artisan make:model Address -m
 ```
+
+- 🗃️ Category:
   
+```CMD
+php artisan make:model Category -m
+```
+
+using index in column:
+
+```Plaintext
+<table>
+  <tr>
+    <th>Without Index (Slow)  </th>
+    <th>With Index (Fast)</th>
+  </tr>
+  <tr>
+    
+    <td>Database searches row-by-row.s</td>
+    <td>Database uses a "Binary Search" or "B-Tree.</td>
+  </tr>
+  <tr>
+    <td>If you have 1 million users, it checks 1 million rows.</td>
+    <td>If you have 1 million users, it finds the result in about 20 steps.</td>
+  </tr>
+  <tr>
+    <td>High CPU usage.</td>
+    <td>Low CPU usage, very high speed.</td>
+  </tr>
+</table>
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
