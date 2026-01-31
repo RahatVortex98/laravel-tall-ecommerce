@@ -45,7 +45,8 @@ User.php:
 
 ## ⛔ Restriction (User can't access admin dashboard):
 
-Filament Link: ```https://filamentphp.com/docs/5.x/users/overview```
+[Filament]((https://filamentphp.com/docs/5.x/users/overview))
+
 
 ```PHP
 class User extends Authenticatable implements FilamentUser
@@ -115,6 +116,31 @@ using index in column:
 ```CMD
 php artisan make:model Brand -m  
 ```
+
+- Automatically generate the slug and updating:
+  
+```PHP
+use Illuminate\Support\Str;
+
+protected static function boot()
+{
+    parent::boot();
+
+    static::creating(function ($brand) {
+        if (empty($brand->slug)) {
+            $brand->slug = Str::slug($brand->name);
+        }
+    });
+    static::updating(function($brand){
+        if($brand->isDirty('name')&& empty($brand->empty)){
+            $brand->slug = Str::slug($brand->name);
+        }
+    });
+}
+```
+-Why isDirty():
+You used $category->isDirty('name'). This is a very efficient Laravel feature. It tells the code: "Only run this slug logic if the Name actually changed." If you just update the sort_order or description, Laravel won't waste time recalculating the slug.
+
 - 📦 Product:
 - Acts as the central hub for general item details, descriptions, and SEO data.
 
@@ -154,7 +180,11 @@ php artisan make:model Coupon -m
 ```CMD
 php artisan make:model Order -m 
 ```
+in model:
 
+```Plaintext
+use SoftDeletes;
+```
 - 📋 OrderItem:
 - Records the exact price, quantity, and name of every specific item inside an order.
 
@@ -275,8 +305,71 @@ php artisan make:model Setting -m
 ```Plaintext
 APP_NAME='Ecommerce'
 FILESYSTEM_DISK=public
-```  
+```
+### Concept of Scope, Helper method & Business logic:
+<hr>
 
+1. Scope: A scope is a shortcut for a database filter.
+  
+- 🧠 Think like this
+“I want only SOME records from the table.”
+
+```PHP
+
+public function scopeActive($query)
+{
+    return $query->where('status', 'active');
+}
+```
+Usage:
+```PHP
+Product::active()->get();
+
+```
+🔁 Multiple filters:
+
+```PHP
+Product::active()->inStock()->latest()->get();
+
+```
+2. Business Logic:
+-“What can this model do?” or “What state is it in?”
+-No database filtering.
+-Just logic about ONE record.
+
+```PHP
+// Product model
+public function isAvailable()
+{
+    return $this->status === 'active' && $this->stock > 0;
+}
+
+```
+Usage:
+
+```PHP
+if ($product->isAvailable()) {
+    // show Buy button
+}
+
+
+```
+3. Helper Method (REUSABLE TOOL):
+
+```PHP
+
+function money($amount)
+{
+    return number_format($amount, 2) . ' ৳';
+}
+
+```
+Usage:
+
+```HTML
+{{ money($order->total) }}
+
+```
 ### Filament:
 <hr>
 
